@@ -15,6 +15,7 @@
 		1243C7271C63A9B300ED236E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243C7251C63A9B300ED236E /* LaunchScreen.storyboard */; };
 		1243C7321C63A9B300ED236E /* ConferenciaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243C7311C63A9B300ED236E /* ConferenciaTests.swift */; };
 		1243C73D1C63A9B300ED236E /* ConferenciaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243C73C1C63A9B300ED236E /* ConferenciaUITests.swift */; };
+		1243C74B1C63AAED00ED236E /* images in Resources */ = {isa = PBXBuildFile; fileRef = 1243C74A1C63AAED00ED236E /* images */; settings = {ASSET_TAGS = (New, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		1243C7381C63A9B300ED236E /* ConferenciaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ConferenciaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1243C73C1C63A9B300ED236E /* ConferenciaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConferenciaUITests.swift; sourceTree = "<group>"; };
 		1243C73E1C63A9B300ED236E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1243C74A1C63AAED00ED236E /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		1243C7191C63A9B300ED236E /* Conferencia */ = {
 			isa = PBXGroup;
 			children = (
+				1243C74A1C63AAED00ED236E /* images */,
 				1243C71A1C63A9B300ED236E /* AppDelegate.swift */,
 				1243C71C1C63A9B300ED236E /* FirstViewController.swift */,
 				1243C71E1C63A9B300ED236E /* SecondViewController.swift */,
@@ -190,6 +193,9 @@
 		1243C70F1C63A9B300ED236E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = achan;
@@ -235,6 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1243C74B1C63AAED00ED236E /* images in Resources */,
 				1243C7271C63A9B300ED236E /* LaunchScreen.storyboard in Resources */,
 				1243C7241C63A9B300ED236E /* Assets.xcassets in Resources */,
 				1243C7221C63A9B300ED236E /* Main.storyboard in Resources */,
@@ -491,6 +498,7 @@
 				1243C7431C63A9B300ED236E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1243C7441C63A9B300ED236E /* Build configuration list for PBXNativeTarget "ConferenciaTests" */ = {
 			isa = XCConfigurationList;
@@ -499,6 +507,7 @@
 				1243C7461C63A9B300ED236E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1243C7471C63A9B300ED236E /* Build configuration list for PBXNativeTarget "ConferenciaUITests" */ = {
 			isa = XCConfigurationList;
@@ -507,6 +516,7 @@
 				1243C7491C63A9B300ED236E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
