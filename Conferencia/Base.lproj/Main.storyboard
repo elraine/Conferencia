@@ -32,7 +32,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ISMP_TitleBar.png" translatesAutoresizingMaskIntoConstraints="NO" id="X4a-pb-DV0">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="images/ISMP_TitleBar.png" translatesAutoresizingMaskIntoConstraints="NO" id="X4a-pb-DV0">
                                 <rect key="frame" x="20" y="30" width="560" height="149.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="X4a-pb-DV0" secondAttribute="height" multiplier="3.75" id="dgD-c9-A4X"/>
@@ -51,7 +51,7 @@
                                         <rect key="frame" x="130.5" y="10" width="419.5" height="100"/>
                                         <state key="normal" title="CLICK ME IM FAMOUS"/>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LOGOISMP_2015.png" translatesAutoresizingMaskIntoConstraints="NO" id="7Ht-Iw-lD8">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="images/LOGOISMP_2015.png" translatesAutoresizingMaskIntoConstraints="NO" id="7Ht-Iw-lD8">
                                         <rect key="frame" x="8" y="10" width="112.5" height="150"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="7Ht-Iw-lD8" secondAttribute="height" multiplier="0.75" id="IfC-iw-DXa"/>
@@ -225,9 +225,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ISMP_TitleBar.png" width="600" height="160"/>
-        <image name="LOGOISMP_2015.png" width="500" height="500"/>
         <image name="first" width="30" height="30"/>
+        <image name="images/ISMP_TitleBar.png" width="600" height="160"/>
+        <image name="images/LOGOISMP_2015.png" width="600" height="160"/>
         <image name="second" width="30" height="30"/>
     </resources>
 </document>
