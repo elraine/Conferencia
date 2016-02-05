@@ -22,8 +22,13 @@ class HomepageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    override func viewDidAppear() {
-        
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        let time = NSDate()
+        let currentMin = time.minute()
+        let span = Float(currentMin)/60.0
+        Progress.setProgress(span, animated: false)
+        print("\(currentMin) : \(span)")
     }
 
 }
