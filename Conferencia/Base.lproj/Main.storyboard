@@ -10,7 +10,7 @@
         <!--Homepage-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController id="9pv-A4-QxB" userLabel="Homepage" customClass="FirstViewController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="9pv-A4-QxB" userLabel="Homepage" customClass="HomepageViewController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ia1-K6-d13"/>
                         <viewControllerLayoutGuide type="bottom" id="4ug-Mw-9AY"/>
@@ -107,6 +107,9 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf" userLabel="HomePage"/>
+                    <connections>
+                        <outlet property="Progress" destination="6K7-mC-Cs1" id="3x6-YE-3FA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
@@ -115,7 +118,7 @@
         <!--Program-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController id="8rJ-Kc-sve" userLabel="Program" customClass="SecondViewController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="8rJ-Kc-sve" userLabel="Program" customClass="ProgramViewController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L7p-HK-0SC"/>
                         <viewControllerLayoutGuide type="bottom" id="Djb-ko-YwX"/>
@@ -150,7 +153,7 @@
         <!--Maps-->
         <scene sceneID="s8R-Cj-PqG">
             <objects>
-                <viewController id="7KF-NF-ntT" userLabel="Maps" sceneMemberID="viewController">
+                <viewController id="7KF-NF-ntT" userLabel="Maps" customClass="MapsViewController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UJy-fQ-aOP"/>
                         <viewControllerLayoutGuide type="bottom" id="OiX-49-ODf"/>
@@ -169,7 +172,7 @@
         <!--GenInformations-->
         <scene sceneID="2wC-KT-FMW">
             <objects>
-                <viewController id="EAc-bS-w1u" userLabel="GenInformations" customClass="Gene" sceneMemberID="viewController">
+                <viewController id="EAc-bS-w1u" userLabel="GenInformations" customClass="GeneralInformationViewController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pIz-7w-qfB"/>
                         <viewControllerLayoutGuide type="bottom" id="yjT-ZQ-cmh"/>

@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  SecondViewController.swift
 //  Conferencia
 //
 //  Created by Alexis Chan on 04/02/2016.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class ProgramViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
