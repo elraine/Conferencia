@@ -42,7 +42,7 @@
                                                 <state key="normal" title="CLICK ME IM FAMOUS"/>
                                             </button>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6K7-mC-Cs1">
-                                                <rect key="frame" x="10" y="120" width="409.5" height="5"/>
+                                                <rect key="frame" x="10" y="115" width="409.5" height="5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="0CG-fz-ctr"/>
                                                     <constraint firstAttribute="height" constant="5" id="LMo-1J-RbS"/>
@@ -60,7 +60,7 @@
                                             <constraint firstAttribute="trailing" secondItem="6K7-mC-Cs1" secondAttribute="trailing" constant="10" id="L0F-Od-d5o"/>
                                             <constraint firstItem="6K7-mC-Cs1" firstAttribute="leading" secondItem="rNE-52-h6X" secondAttribute="leading" constant="10" id="LHt-Cm-dzo"/>
                                             <constraint firstItem="Mut-7t-xOZ" firstAttribute="top" secondItem="rNE-52-h6X" secondAttribute="top" id="Lxc-2d-qLf"/>
-                                            <constraint firstAttribute="bottom" secondItem="6K7-mC-Cs1" secondAttribute="bottom" constant="10" id="V5c-Cu-7zC"/>
+                                            <constraint firstAttribute="bottom" secondItem="6K7-mC-Cs1" secondAttribute="bottom" constant="40" id="V5c-Cu-7zC"/>
                                             <constraint firstAttribute="trailing" secondItem="Mut-7t-xOZ" secondAttribute="trailing" id="atI-Jz-BVa"/>
                                             <constraint firstItem="Mut-7t-xOZ" firstAttribute="leading" secondItem="rNE-52-h6X" secondAttribute="leading" id="g2U-aM-ro3"/>
                                         </constraints>
@@ -153,7 +153,7 @@
         <!--Maps-->
         <scene sceneID="s8R-Cj-PqG">
             <objects>
-                <viewController id="7KF-NF-ntT" userLabel="Maps" customClass="MapsViewController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="7KF-NF-ntT" userLabel="Maps" customClass="MapsPreludeController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UJy-fQ-aOP"/>
                         <viewControllerLayoutGuide type="bottom" id="OiX-49-ODf"/>
@@ -161,13 +161,69 @@
                     <view key="view" contentMode="scaleToFill" id="Vr1-qi-iqb">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jld-ey-0OE">
+                                <rect key="frame" x="20" y="501" width="560" height="30"/>
+                                <state key="normal" title="Where am I"/>
+                                <connections>
+                                    <segue destination="jFF-8K-1gu" kind="show" id="Asj-zb-9nO"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7N3-OL-gGH">
+                                <rect key="frame" x="20" y="20" width="560" height="471"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="Jld-ey-0OE" secondAttribute="trailing" id="dH3-ha-D8b"/>
+                            <constraint firstItem="Jld-ey-0OE" firstAttribute="leading" secondItem="Vr1-qi-iqb" secondAttribute="leadingMargin" id="e9l-zN-1GJ"/>
+                            <constraint firstItem="7N3-OL-gGH" firstAttribute="trailing" secondItem="Vr1-qi-iqb" secondAttribute="trailingMargin" id="foN-Ye-F0p"/>
+                            <constraint firstItem="Jld-ey-0OE" firstAttribute="top" secondItem="7N3-OL-gGH" secondAttribute="bottom" constant="10" id="fzV-dA-dJP"/>
+                            <constraint firstItem="7N3-OL-gGH" firstAttribute="top" secondItem="UJy-fQ-aOP" secondAttribute="bottom" id="m7q-QM-GlX"/>
+                            <constraint firstItem="OiX-49-ODf" firstAttribute="top" secondItem="Jld-ey-0OE" secondAttribute="bottom" constant="20" id="pB1-gm-MN1"/>
+                            <constraint firstItem="7N3-OL-gGH" firstAttribute="leading" secondItem="Vr1-qi-iqb" secondAttribute="leadingMargin" id="tI3-Fm-AYc"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="fii-Wr-2DD" userLabel="Maps"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Ei-hm-DXx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="50" y="1374"/>
+        </scene>
+        <!--MapView-->
+        <scene sceneID="eEo-Qq-GOg">
+            <objects>
+                <viewController id="jFF-8K-1gu" userLabel="MapView" customClass="MapsViewController" customModule="Conferencia" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Vnk-uK-cUS"/>
+                        <viewControllerLayoutGuide type="bottom" id="kro-hU-qUB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Tc1-5s-nIB">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" mapType="standard" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" translatesAutoresizingMaskIntoConstraints="NO" id="glZ-f0-fAT">
+                                <rect key="frame" x="20" y="20" width="560" height="560"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="glZ-f0-fAT" firstAttribute="trailing" secondItem="Tc1-5s-nIB" secondAttribute="trailingMargin" id="GBa-Fp-N6m"/>
+                            <constraint firstAttribute="bottom" secondItem="glZ-f0-fAT" secondAttribute="bottom" constant="20" symbolic="YES" id="dIn-D4-sXM"/>
+                            <constraint firstItem="glZ-f0-fAT" firstAttribute="leading" secondItem="Tc1-5s-nIB" secondAttribute="leadingMargin" id="dR8-WW-J5e"/>
+                            <constraint firstItem="glZ-f0-fAT" firstAttribute="top" secondItem="Vnk-uK-cUS" secondAttribute="bottom" id="vm3-j4-qCi"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="Map" destination="glZ-f0-fAT" id="R6v-SR-svF"/>
+                        <outlet property="map" destination="glZ-f0-fAT" id="z2C-ty-X5R"/>
+                        <outlet property="mapView" destination="glZ-f0-fAT" id="2WU-7k-Chy"/>
+                        <outlet property="mv" destination="glZ-f0-fAT" id="Ihe-54-bDy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hes-YV-aJj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="50" y="2147"/>
         </scene>
         <!--GenInformations-->
         <scene sceneID="2wC-KT-FMW">

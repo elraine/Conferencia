@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,MKMapViewDelegate {
 
     var window: UIWindow?
 
