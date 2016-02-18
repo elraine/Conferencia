@@ -20,7 +20,7 @@
 		12B1EBD61C64E10500E0723E /* GeneralInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1EBD51C64E10500E0723E /* GeneralInformationViewController.swift */; };
 		12B1EBD81C64E12900E0723E /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1EBD71C64E12900E0723E /* MapsViewController.swift */; };
 		12B1EBDA1C64E28E00E0723E /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1EBD91C64E28E00E0723E /* NSDateExtension.swift */; };
-		12B1EBE21C650D0700E0723E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12B1EBE11C650D0700E0723E /* MapKit.framework */; };
+		12B1EBE21C650D0700E0723E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12B1EBE11C650D0700E0723E /* MapKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		12B1EBE41C650D2100E0723E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12B1EBE31C650D2100E0723E /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 

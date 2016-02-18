@@ -202,26 +202,65 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" mapType="standard" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" translatesAutoresizingMaskIntoConstraints="NO" id="glZ-f0-fAT">
-                                <rect key="frame" x="20" y="20" width="560" height="560"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="klJ-JX-bJt">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Maps" id="xFo-eU-gyl">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="n98-g5-aU4">
+                                            <connections>
+                                                <segue destination="pQV-IZ-CZ2" kind="unwind" unwindAction="prepareForUnwind:" id="KUW-VG-RkF"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Nke-iD-Kr7">
+                                <rect key="frame" x="20" y="104.5" width="560" height="441.5"/>
                             </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqS-rf-pm8">
+                                <rect key="frame" x="25" y="74" width="42" height="20.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="44N-WX-mku"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="44N-WX-mku"/>
+                                    </mask>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="glZ-f0-fAT" firstAttribute="trailing" secondItem="Tc1-5s-nIB" secondAttribute="trailingMargin" id="GBa-Fp-N6m"/>
-                            <constraint firstAttribute="bottom" secondItem="glZ-f0-fAT" secondAttribute="bottom" constant="20" symbolic="YES" id="dIn-D4-sXM"/>
-                            <constraint firstItem="glZ-f0-fAT" firstAttribute="leading" secondItem="Tc1-5s-nIB" secondAttribute="leadingMargin" id="dR8-WW-J5e"/>
-                            <constraint firstItem="glZ-f0-fAT" firstAttribute="top" secondItem="Vnk-uK-cUS" secondAttribute="bottom" id="vm3-j4-qCi"/>
+                            <constraint firstItem="tqS-rf-pm8" firstAttribute="leading" secondItem="Tc1-5s-nIB" secondAttribute="leadingMargin" constant="5" id="7wg-yn-1Jl"/>
+                            <constraint firstItem="klJ-JX-bJt" firstAttribute="leading" secondItem="Tc1-5s-nIB" secondAttribute="leadingMargin" constant="-20" id="D8F-bB-deG"/>
+                            <constraint firstItem="klJ-JX-bJt" firstAttribute="top" secondItem="Vnk-uK-cUS" secondAttribute="bottom" id="Rdu-Ij-T2c"/>
+                            <constraint firstItem="Nke-iD-Kr7" firstAttribute="trailing" secondItem="Tc1-5s-nIB" secondAttribute="trailingMargin" id="VU1-xg-9FA"/>
+                            <constraint firstItem="klJ-JX-bJt" firstAttribute="leading" secondItem="Tc1-5s-nIB" secondAttribute="leading" id="d9p-yC-wz5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="klJ-JX-bJt" secondAttribute="trailing" constant="-20" id="dIT-AX-RBi"/>
+                            <constraint firstItem="kro-hU-qUB" firstAttribute="top" secondItem="Nke-iD-Kr7" secondAttribute="bottom" constant="10" id="f3y-5G-ooz"/>
+                            <constraint firstAttribute="trailing" secondItem="klJ-JX-bJt" secondAttribute="trailing" id="gtY-Zt-wHs"/>
+                            <constraint firstItem="tqS-rf-pm8" firstAttribute="top" secondItem="klJ-JX-bJt" secondAttribute="bottom" constant="10" id="ofu-CA-eoL"/>
+                            <constraint firstItem="Nke-iD-Kr7" firstAttribute="top" secondItem="tqS-rf-pm8" secondAttribute="bottom" constant="10" id="ojb-uB-dxB"/>
+                            <constraint firstItem="Nke-iD-Kr7" firstAttribute="leading" secondItem="Tc1-5s-nIB" secondAttribute="leadingMargin" id="uL9-oG-TG1"/>
+                            <constraint firstItem="klJ-JX-bJt" firstAttribute="top" secondItem="Tc1-5s-nIB" secondAttribute="top" id="xWx-3Z-waH"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="xWx-3Z-waH"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="Map" destination="glZ-f0-fAT" id="R6v-SR-svF"/>
-                        <outlet property="map" destination="glZ-f0-fAT" id="z2C-ty-X5R"/>
-                        <outlet property="mapView" destination="glZ-f0-fAT" id="2WU-7k-Chy"/>
-                        <outlet property="mv" destination="glZ-f0-fAT" id="Ihe-54-bDy"/>
+                        <outlet property="displayCoords" destination="tqS-rf-pm8" id="gId-Wt-m0Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hes-YV-aJj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="pQV-IZ-CZ2" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="50" y="2147"/>
         </scene>
