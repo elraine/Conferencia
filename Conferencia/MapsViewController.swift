@@ -15,8 +15,8 @@ class MapsViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDe
 
     
     @IBOutlet weak var displayCoords: UILabel!
-    
-    @IBOutlet weak var mapView: MKMapView! = MKMapView()
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var back: UIBarButtonItem!
     
     let initialLocation = CLLocation(latitude:44.8058523, longitude:-0.6066426)
     let regionRadius: CLLocationDistance = 1000
@@ -28,6 +28,12 @@ class MapsViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDe
            }
     //user location
   let locationManager = CLLocationManager()
+    
+    
+    
+    @IBAction func tapBack(sender: UIBarButtonItem) {
+        performSegueWithIdentifier("getBack", sender: self)
+    }
     
     
     
@@ -46,12 +52,8 @@ class MapsViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDe
         //map update
         mapView.delegate = self
         mapView.showsUserLocation = true
-//        var region = MKCoordinateRegion()
-//        region.center.latitude = locationManager.location!.coordinate.latitude
-//        region.center.longitude = locationManager.location!.coordinate.longitude
-//        region.span = MKCoordinateSpanMake(0.2, 0.2)
-//        mapView.setRegion(region, animated: true)
-        centerMapOnLocation(initialLocation)
+        centerMapOnLocation(locationManager.location!)
+        
     }
 
     
@@ -66,11 +68,7 @@ class MapsViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDe
         print("Failed to find user's location: \(error.localizedDescription)")
     }
 
+
     
-    @IBAction func prepareForUnwind(unwindSegue: UIStoryboardSegue){
-        if let _ = unwindSegue.sourceViewController as? MapsPreludeController{
-        NSLog ("INCOMING")
-        }
-    }
     
 }

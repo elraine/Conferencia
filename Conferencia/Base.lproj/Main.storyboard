@@ -166,21 +166,30 @@
                                 <rect key="frame" x="20" y="501" width="560" height="30"/>
                                 <state key="normal" title="Where am I"/>
                                 <connections>
-                                    <segue destination="jFF-8K-1gu" kind="show" id="Asj-zb-9nO"/>
+                                    <segue destination="jFF-8K-1gu" kind="show" id="6nC-uV-I9c"/>
                                 </connections>
                             </button>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2J0-uj-LGf">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Title" id="F09-7v-R2B"/>
+                                </items>
+                            </navigationBar>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7N3-OL-gGH">
-                                <rect key="frame" x="20" y="20" width="560" height="471"/>
+                                <rect key="frame" x="20" y="74" width="560" height="417"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="2J0-uj-LGf" firstAttribute="top" secondItem="UJy-fQ-aOP" secondAttribute="bottom" id="2wg-Ia-mGo"/>
+                            <constraint firstItem="2J0-uj-LGf" firstAttribute="centerX" secondItem="7N3-OL-gGH" secondAttribute="centerX" id="9Al-tA-J8K"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Jld-ey-0OE" secondAttribute="trailing" id="dH3-ha-D8b"/>
                             <constraint firstItem="Jld-ey-0OE" firstAttribute="leading" secondItem="Vr1-qi-iqb" secondAttribute="leadingMargin" id="e9l-zN-1GJ"/>
                             <constraint firstItem="7N3-OL-gGH" firstAttribute="trailing" secondItem="Vr1-qi-iqb" secondAttribute="trailingMargin" id="foN-Ye-F0p"/>
                             <constraint firstItem="Jld-ey-0OE" firstAttribute="top" secondItem="7N3-OL-gGH" secondAttribute="bottom" constant="10" id="fzV-dA-dJP"/>
-                            <constraint firstItem="7N3-OL-gGH" firstAttribute="top" secondItem="UJy-fQ-aOP" secondAttribute="bottom" id="m7q-QM-GlX"/>
+                            <constraint firstItem="2J0-uj-LGf" firstAttribute="leading" secondItem="Vr1-qi-iqb" secondAttribute="leading" id="oEM-kG-rHo"/>
                             <constraint firstItem="OiX-49-ODf" firstAttribute="top" secondItem="Jld-ey-0OE" secondAttribute="bottom" constant="20" id="pB1-gm-MN1"/>
+                            <constraint firstItem="7N3-OL-gGH" firstAttribute="top" secondItem="2J0-uj-LGf" secondAttribute="bottom" constant="10" id="raC-v7-RHd"/>
                             <constraint firstItem="7N3-OL-gGH" firstAttribute="leading" secondItem="Vr1-qi-iqb" secondAttribute="leadingMargin" id="tI3-Fm-AYc"/>
                         </constraints>
                     </view>
@@ -208,7 +217,8 @@
                                     <navigationItem title="Maps" id="xFo-eU-gyl">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="n98-g5-aU4">
                                             <connections>
-                                                <segue destination="pQV-IZ-CZ2" kind="unwind" unwindAction="prepareForUnwind:" id="KUW-VG-RkF"/>
+                                                <action selector="tapBack:" destination="jFF-8K-1gu" id="BpS-c6-gpV"/>
+                                                <segue destination="pQV-IZ-CZ2" kind="unwind" unwindAction="prepareForUnwind:" id="GgP-EG-5k7"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -256,7 +266,9 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="back" destination="n98-g5-aU4" id="dV5-nY-8of"/>
                         <outlet property="displayCoords" destination="tqS-rf-pm8" id="gId-Wt-m0Y"/>
+                        <outlet property="mapView" destination="Nke-iD-Kr7" id="86m-k8-O1o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hes-YV-aJj" userLabel="First Responder" sceneMemberID="firstResponder"/>
