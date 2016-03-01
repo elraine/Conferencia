@@ -4,7 +4,7 @@
 //
 //  Created by Alexis Chan on 08/02/2016.
 //  Copyright © 2016 achan. All rights reserved.
-//
+
 
 import UIKit
 
@@ -12,8 +12,5 @@ class MapsPreludeController: UIViewController{
 
     
     @IBAction func prepareForUnwind(unwindSegue: UIStoryboardSegue){
-        //        if let _ = unwindSegue.sourceViewController as? MapsPreludeController{
-        //        NSLog ("INCOMING")
-        //        }
     }
 }

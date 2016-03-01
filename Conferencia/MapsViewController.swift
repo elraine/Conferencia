@@ -4,7 +4,7 @@
 //
 //  Created by Alexis Chan on 05/02/2016.
 //  Copyright © 2016 achan. All rights reserved.
-//
+
 
 import UIKit
 import MapKit
@@ -29,15 +29,6 @@ class MapsViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDe
     //user location
   let locationManager = CLLocationManager()
     
-    
-    
-    @IBAction func tapBack(sender: UIBarButtonItem) {
-        performSegueWithIdentifier("getBack", sender: self)
-    }
-    
-    
-    
-    
     override func viewDidLoad(){
         super.viewDidLoad()
         
@@ -52,7 +43,12 @@ class MapsViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDe
         //map update
         mapView.delegate = self
         mapView.showsUserLocation = true
-        centerMapOnLocation(locationManager.location!)
+        let selfLoc = locationManager.location
+        if((selfLoc) != nil){
+            centerMapOnLocation(locationManager.location!)
+        }else{
+            centerMapOnLocation(initialLocation)
+        }
         
     }
 
