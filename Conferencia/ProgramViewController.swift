@@ -12,15 +12,9 @@ import Alamofire
 import SwiftyJSON
 
 
-
-
 class ProgramViewController: UIViewController{
-
-    let path = NSBundle.mainBundle().pathForResource("storage", ofType: "sqlite")! // in case of a sqlite file called 'storage.sqlite'
-    // N.B. the sqlite file needs to be added to the project and to the application target
     
-    let db = Connection("\(path)")
-
+ let SQLBase = SQLiteDataStore.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()

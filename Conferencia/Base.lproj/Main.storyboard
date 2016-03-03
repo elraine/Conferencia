@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="images/ISMP_TitleBar.png" translatesAutoresizingMaskIntoConstraints="NO" id="X4a-pb-DV0">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="images\ENSEIRB-map_reference.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="X4a-pb-DV0">
                                 <rect key="frame" x="20" y="30" width="560" height="149.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="X4a-pb-DV0" secondAttribute="height" multiplier="3.75" id="dgD-c9-A4X"/>
@@ -218,8 +218,8 @@
                                     <navigationItem title="Title" id="F09-7v-R2B"/>
                                 </items>
                             </navigationBar>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" image="ENSEIRB-map_reference.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="7N3-OL-gGH">
-                                <rect key="frame" x="20" y="74" width="560" height="417"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" misplaced="YES" image="images\ENSEIRB-map_reference.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="7N3-OL-gGH">
+                                <rect key="frame" x="20" y="76" width="560" height="417"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -381,11 +381,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ENSEIRB-map_reference.jpg" width="512" height="372"/>
         <image name="LOGOISMP_2015.png" width="500" height="500"/>
         <image name="first" width="30" height="30"/>
-        <image name="images/ISMP_TitleBar.png" width="600" height="160"/>
         <image name="images/LOGOISMP_2015.png" width="600" height="160"/>
+        <image name="images\ENSEIRB-map_reference.jpg" width="600" height="160"/>
         <image name="second" width="30" height="30"/>
     </resources>
 </document>
