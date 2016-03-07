@@ -39,6 +39,11 @@
 		<string>MKDirectionsModePedestrian</string>
 		<string>MKDirectionsModePlane</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Geoloc the user</string>
 	<key>UILaunchStoryboardName</key>
