@@ -43,4 +43,20 @@ extension NSDate
         //Return Short Time String
         return timeString
     }
+    
+    func dateView(date : String) -> String{
+        var myArray = date.componentsSeparatedByString("-")
+        
+        let timeStartComponents = NSDateComponents()
+        timeStartComponents.year = Int(myArray[0])!
+        timeStartComponents.month = Int(myArray[1])!
+        timeStartComponents.day = Int(myArray[2])!
+        
+        let timeStart = NSCalendar.currentCalendar().dateFromComponents(timeStartComponents)!
+        
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "EE d"
+        
+        return dayTimePeriodFormatter.stringFromDate(timeStart)
+    }
 }
