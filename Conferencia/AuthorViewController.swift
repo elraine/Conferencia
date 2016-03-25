@@ -12,8 +12,8 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     var author : Author?
     
-    var docs : [Doc]? = []
-    
+    var docsTalks = [Doc]()
+    var docsCoAuthorship = [Doc]()
     
     // view
     @IBOutlet weak var speakerName: UILabel!
@@ -23,15 +23,13 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func cancel(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+   
     
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var tableView2: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        
         navigationItem.title = "Speaker Details"
         speakerName.text = "\(self.author!.lastname) \(self.author!.firstname)"
         
@@ -45,12 +43,25 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             for l in located! {
                 let doc : Doc = try DocDataHelper.find(l.docid)!
-                docs?.append(doc)
+                if l.speaker.containsString("1") {
+                    docsTalks.append(doc)
+                    print("a")
+                }else{
+                    docsCoAuthorship.append(doc)
+                    print("ok")
+                }
             }
         }
         catch{}
         
+        print(docsCoAuthorship.count)
         
+        if docsTalks.count == 0{
+            tableView.hidden = true
+        }
+        if docsCoAuthorship.count == 0{
+            tableView2.hidden = true
+        }
         // View
         
         speakerUniversity.text = affiliation
@@ -58,8 +69,22 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //table view
         tableView.delegate = self
         tableView.dataSource = self
+        tableView2.delegate = self
+        tableView2.dataSource = self
         
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "eventCell")
+        //self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "talksCell")
+       // self.tableView2.registerClass(UITableViewCell.self, forCellReuseIdentifier: "coAuthorshipCell")
+        
+       
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+      
+        // Do any additional setup after loading the view.
+        
+       
+        
+    
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,32 +97,72 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
   
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return docs!.count
+        if tableView == self.tableView{
+            print("docsTalks.count : \(docsTalks.count)")
+            return docsTalks.count
+            
+        }else{
+            print("docsCoAuthorship.count : \(docsCoAuthorship.count)")
+            return docsCoAuthorship.count
+           
+        }
+        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCellWithIdentifier("eventACell")! as! EventViewCell
         
-        let doc = docs![indexPath.row]
-        var event : Event?
-        do{
-            event = try EventDataHelper.find(doc.eventid)
-        }catch{}
-        cell.name.text = event!.title
-        cell.type.text = doc.title
-        
-        if event!.roomid == -1{
-            cell.room.text = ""
+        var doc : Doc?
+        if tableView == self.tableView{
+            
+            doc = docsTalks[indexPath.row]
+            print("doc")
+            let cell = self.tableView.dequeueReusableCellWithIdentifier("talksCell")! as! EventViewCell
+            var event : Event?
+            do{
+                event = try EventDataHelper.find(doc!.eventid)
+            }catch{}
+            cell.name.text = event!.title
+            cell.type.text = doc!.title
+            
+            if event!.roomid == -1{
+                cell.room.text = ""
+            }else{
+                let room = try? RoomDataHelper.find(event!.roomid)
+                cell.room.text = room!!.name
+            }
+            
+            cell.timeS.text = timeView(doc!.time_start)
+            cell.timeE.text = timeView(doc!.time_end)
+            
+            return cell
+
         }else{
-            let room = try? RoomDataHelper.find(event!.roomid)
-            cell.room.text = room!!.name
+            let cell : EventViewCell = self.tableView2.dequeueReusableCellWithIdentifier("coAuthorshipCell")! as! EventViewCell
+            
+            doc = docsCoAuthorship[indexPath.row]
+            
+            print("doc")
+            var event : Event?
+            do{
+                event = try EventDataHelper.find(doc!.eventid)
+            }catch{}
+            cell.name.text = event!.title
+            cell.type.text = doc!.title
+            
+            if event!.roomid == -1{
+                cell.room.text = ""
+            }else{
+                let room = try? RoomDataHelper.find(event!.roomid)
+                cell.room.text = room!!.name
+            }
+            
+            cell.timeS.text = timeView(doc!.time_start)
+            cell.timeE.text = timeView(doc!.time_end)
+            
+            return cell
+
         }
-        
-        cell.timeS.text = timeView(doc.time_start)
-        cell.timeE.text = timeView(doc.time_end)
-        
-        return cell
-    }
+            }
     
 
     
@@ -105,18 +170,32 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("You selected cell #\(indexPath.row)!")
-        let selectedDocCell = self.docs![indexPath.row]
-        print(selectedDocCell)
+        if tableView == self.tableView{
+            let selectedDocCell = self.docsTalks[indexPath.row]
+            print(selectedDocCell)
+        }else{
+            let selectedDocCell = self.docsCoAuthorship[indexPath.row]
+            print(selectedDocCell)
+        }
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowDoc" {
             let DocViewController = (segue.destinationViewController as! UINavigationController).topViewController as! DocDetailViewController
             if let selectedDocCell = sender as? UITableViewCell {
-                let indexPath = self.tableView.indexPathForCell(selectedDocCell)!
-                let selectedAuthor = self.docs![indexPath.row]
                 
-                DocViewController.doc = selectedAuthor
+                let indexPath = self.tableView.indexPathForCell(selectedDocCell)!
+                
+                if tableView == tableView{
+                    let selectedDoc = self.docsTalks[indexPath.row]
+                     DocViewController.doc = selectedDoc
+                }else{
+                    let selectedDoc = self.docsCoAuthorship[indexPath.row]
+                     DocViewController.doc = selectedDoc
+                }
+                
+               
             }
         }
     }

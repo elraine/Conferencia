@@ -20,10 +20,8 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
     var source = [String]()
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var ctrlBar: UISegmentedControl!
-    
-    
-    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+
+
     @IBAction func refresh(sender: UIBarButtonItem) {
         let finish = manager.update()
     }
@@ -66,6 +64,7 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.timeIndex(events!)
 
     }
+    
     
     // MARK: UITableViewDelegate
     

@@ -111,7 +111,7 @@ class AuthorTableViewController: UITableViewController{
             let AuthorDetailViewController = (segue.destinationViewController as! UINavigationController).topViewController as! AuthorViewController
             if let selectedAuthorCell = sender as? UITableViewCell {
                 let indexPath = self.tableView.indexPathForCell(selectedAuthorCell)!
-                let selectedAuthor = self.authors![indexPath.row]
+                let selectedAuthor = self.authors![sections[indexPath.section].index + indexPath.row]
                 
                 AuthorDetailViewController.author = selectedAuthor
             }

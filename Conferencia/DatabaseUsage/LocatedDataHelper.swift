@@ -96,15 +96,20 @@ class LocatedDataHelper {
         
     }
     
-    static func find(firstname : String, lastname : String) throws -> [T]? {
+    static func find(firstname : String?, lastname : String?, docid : Int64? = -1) throws -> [T]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
+        var query = table
         var retArray = [T]()
-        let query = table.filter(firstname == self.firstname && lastname == self.lastname)
+        if docid == -1{
+            query = table.filter(firstname! == self.firstname && lastname! == self.lastname)
+        }else{
+            query = table.filter(docid! == self.docid)
+        }
         let items = try DB.prepare(query)
         for item in items {
-            retArray.append(Located(lastname: item[self.lastname], firstname: item[self.firstname], docid: item[docid], speaker: item[speaker]))
+            retArray.append(Located(lastname: item[self.lastname], firstname: item[self.firstname], docid: item[self.docid], speaker: item[speaker]))
         }
         
         return retArray

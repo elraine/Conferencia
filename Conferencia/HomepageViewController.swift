@@ -29,7 +29,7 @@ class HomepageViewController: UIViewController {
         
         print("first time")
         do{
-         //   try SQLBase.createTables()
+          //  try SQLBase.createTables()
         }catch{ print("Creation de la Base de données : \(error)")}
         
        // let finish = manager.firstConnection()
