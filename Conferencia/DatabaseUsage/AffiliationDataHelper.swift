@@ -13,7 +13,6 @@ class AffiliationDataHelper: DataHelperProtocol {
     static let TABLE_NAME = "Affiliations"
     
     static let table = Table(TABLE_NAME)
-    static let affid = Expression<Int64>("affid")
     static let shortname = Expression<String?>("shortname")
     static let name = Expression<String>("name")
     
@@ -26,9 +25,8 @@ class AffiliationDataHelper: DataHelperProtocol {
         }
         do {
             let _ = try DB.run( table.create(ifNotExists: true) {t in
-                t.column(affid,primaryKey: true)
                 t.column(shortname)
-                t.column(name)
+                t.column(name, primaryKey: true)
                 })
             
         } catch _ {
@@ -41,7 +39,7 @@ class AffiliationDataHelper: DataHelperProtocol {
             throw DataAccessError.Datastore_Connection_Error
         }
         if (item.shortname != nil ) {
-            let insert = table.insert(shortname <- item.shortname, name <- item.name)
+            let insert = table.insert(or: .Replace,shortname <- item.shortname, name <- item.name)
             do {
                 let rowId = try DB.run(insert)
                 guard rowId > 0 else {
@@ -55,6 +53,7 @@ class AffiliationDataHelper: DataHelperProtocol {
         throw DataAccessError.Nil_In_Data
         
     }
+    
     
     static func delete (item: T) throws -> Void {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
@@ -73,13 +72,27 @@ class AffiliationDataHelper: DataHelperProtocol {
         
     }
     
+    static func find(item: T) throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var retArray = [T]()
+        let query = table.filter(item.name == name)
+        let items = try DB.prepare(query.order(name))
+        for item in items {
+            retArray.append(Affiliation(shortname: item[shortname], name: item[name]))
+        }
+        
+        return retArray
+        
+    }
     
     static func findAll() throws -> [T]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
         var retArray = [T]()
-        let items = try DB.prepare(table)
+        let items = try DB.prepare(table.order(name))
         for item in items {
             retArray.append(Affiliation(shortname: item[shortname], name: item[name]))
         }

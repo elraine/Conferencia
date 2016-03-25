@@ -45,7 +45,7 @@ class RoomDataHelper: DataHelperProtocol {
         // fonction qui renvoie un booleen
         if (item.capacity != nil && item.decription != nil ) {
             // fonction
-            let insert = table.insert(roomid <- item.roomid, name <- item.name, capacity <- item.capacity!, decription <- item.decription!)
+            let insert = table.insert(or: .Replace, roomid <- item.roomid, name <- item.name, capacity <- item.capacity!, decription <- item.decription!)
             do {
                 let rowId = try DB.run(insert)
                 
@@ -63,20 +63,7 @@ class RoomDataHelper: DataHelperProtocol {
         
     }
     
-    static func find(id : Int64) throws -> T? {
-        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
-            throw DataAccessError.Datastore_Connection_Error
-        }
-        var ret : T?
-        let query = table.filter(id == self.roomid)
-        let items = try DB.prepare(query)
-        for item in items {
-            ret = Room(roomid: item[roomid], name: item[name], capacity: item[capacity], decription: item[decription])
-        }
-        
-        return ret
-        
-    }
+
     
     static func delete (item: T) throws -> Void {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
@@ -93,6 +80,21 @@ class RoomDataHelper: DataHelperProtocol {
             throw DataAccessError.Delete_Error
         }
   
+        
+    }
+    
+    static func find(id : Int64) throws -> T? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var ret : T?
+        let query = table.filter(id == self.roomid)
+        let items = try DB.prepare(query)
+        for item in items {
+            ret = Room(roomid: item[roomid], name: item[name], capacity: item[capacity], decription: item[decription])
+        }
+        
+        return ret
         
     }
     

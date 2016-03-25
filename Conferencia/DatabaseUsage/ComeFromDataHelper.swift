@@ -13,26 +13,13 @@ class ComeFromDataHelper: DataHelperProtocol {
     static let TABLE_NAME = "ComeFrom"
     
     static let table = Table(TABLE_NAME)
-    static let cfid = Expression<Int64>("cfid")
     static let affiliationname = Expression<String>("affiliationname")
     static let lastname = Expression<String>("lastname")
     static let firstname = Expression<String>("firstname")
     
     typealias T = ComeFrom
     
-    static func findAll() throws -> [T]? {
-        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
-            throw DataAccessError.Datastore_Connection_Error
-        }
-        var retArray = [T]()
-        let items = try DB.prepare(table)
-        for item in items {
-            retArray.append(ComeFrom(lastname: item[lastname], firstname: item[firstname], affiliationname: item[affiliationname]))
-        }
-        
-        return retArray
-        
-    }
+    
     
     static func createTable() throws {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
@@ -40,33 +27,15 @@ class ComeFromDataHelper: DataHelperProtocol {
         }
         do {
             let _ = try DB.run( table.create(ifNotExists: true) {t in
-                t.column(cfid,primaryKey: true)
                 t.column(affiliationname)
                 t.column(lastname)
                 t.column(firstname)
+                t.primaryKey(affiliationname,lastname,firstname)
                 })
             
         } catch _ {
             // Error throw if table already exists
         }
-    }
-    
-    static func find(firstname: String, lastname: String) throws -> String? {
-        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
-            throw DataAccessError.Datastore_Connection_Error
-        }
-        
-        let query = table.filter(firstname == self.firstname && lastname == self.lastname)
-        
-        let items = try DB.prepare(query)
-        var res : String?
-        for item in items {
-            res = item[affiliationname]
-        }
-        if res == nil {
-            res = ""
-        }
-        return res
     }
     
     static func insert(item: T) throws -> Int64 {
@@ -104,6 +73,54 @@ class ComeFromDataHelper: DataHelperProtocol {
     }
     
     
+    static func find(firstname: String, lastname: String) throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        
+        let query = table.filter(firstname == self.firstname && lastname == self.lastname)
+        
+        let items = try DB.prepare(query)
+        var resArray = [T]()
+        for item in items {
+            resArray.append(ComeFrom(lastname: lastname, firstname: firstname, affiliationname: item[affiliationname]))
+        }
     
+        return resArray
+    }
+    
+    static func find(item : T? = nil, affiliationname : String? = nil) throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var query = table
+        if item != nil{
+            query = table.filter(firstname == item!.firstname && lastname == item!.lastname && affiliationname == item!.affiliationname)
+        }else{
+            query = table.filter(affiliationname! == self.affiliationname)
+        }
+        let items = try DB.prepare(query)
+        var resArray = [T]()
+        for item in items {
+            resArray.append(ComeFrom(lastname: item[lastname], firstname: item[firstname], affiliationname: item[self.affiliationname]))
+        }
+        
+        return resArray
+    }
+    
+    
+    static func findAll() throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var retArray = [T]()
+        let items = try DB.prepare(table)
+        for item in items {
+            retArray.append(ComeFrom(lastname: item[lastname], firstname: item[firstname], affiliationname: item[affiliationname]))
+        }
+        
+        return retArray
+        
+    }
 }
 

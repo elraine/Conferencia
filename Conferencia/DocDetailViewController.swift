@@ -8,29 +8,94 @@
 
 import UIKit
 
-class DocDetailViewController: UIViewController {
-
+class DocDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var doc : Doc?
+    var event : Event?
+    var room : Room?
    
+    @IBOutlet weak var clusterName: UILabel!
+    @IBOutlet weak var docName: UILabel!
+    @IBOutlet weak var date: UILabel!
+    @IBOutlet weak var roomName: UILabel!   
+    @IBOutlet weak var abstractView: UITextView!
+    
+    @IBAction func cancel(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        tableView.delegate = self
+        tableView.dataSource = self
+       
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        //base
+        
+        do{
+            located = try LocatedDataHelper.find(doc!.docid)
+            event = try EventDataHelper.find(doc!.eventid)
+            room = try RoomDataHelper.find(event!.roomid)
+        }catch{}
+        
+        // Set information
+        clusterName.text = event!.title
+        docName.text = doc!.title
+        date.text = "\(event!.date) \(doc!.time_start) - \(doc!.time_end)"
+        roomName.text = room!.name
+        abstractView.text = doc!.abstract
+        
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // MARK: - Contributors Table View
+    var located : [Located]? = []
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return located!.count
     }
-    */
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
+        cell.textLabel?.text = "\(self.located![indexPath.row].lastname) \(self.located![indexPath.row].firstname)"
+        return cell
+    }
+   
+     // MARK: - Navigation
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("You selected cell #\(indexPath.row)!")
+        let selectedAuthor = self.located![indexPath.row]
+        print(selectedAuthor)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+         print(segue.identifier )
+        if segue.identifier == "ShowAuthor" {
+            let AuthorDetailViewController = (segue.destinationViewController as! UINavigationController).topViewController as! AuthorViewController
+            if let selectedAuthorCell = sender as? UITableViewCell {
+                let indexPath = self.tableView.indexPathForCell(selectedAuthorCell)!
+                
+                do{
+                    let l = self.located![indexPath.row]
+                    let selectedAuthor : [Author] = try AuthorDataHelper.find(l.lastname, firstname: l.firstname)!
+                   
+                    
+                    AuthorDetailViewController.author = selectedAuthor[0]
+                }catch{print("find Author from located : \(error)")}
+                
+            }
+        }
+    }
 
 }

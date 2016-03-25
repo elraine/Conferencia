@@ -32,8 +32,9 @@ class LocationDataHelper: DataHelperProtocol {
                 t.column(place)
                 t.column(city)
                 t.column(country)
-                t.column(lat, primaryKey: true)
-                t.column(lng, primaryKey: true)
+                t.column(lat)
+                t.column(lng)
+                t.primaryKey(lat,lng)
                 })
             
         } catch _ {
@@ -46,7 +47,7 @@ class LocationDataHelper: DataHelperProtocol {
             throw DataAccessError.Datastore_Connection_Error
         }
         if (item.place != nil && item.city != nil && item.country != nil ) {
-            let insert = table.insert(place <- item.place!, city <- item.city!, country <- item.country!, lat <- item.lat, lng <- item.lng)
+            let insert = table.insert(or: .Replace,place <- item.place!, city <- item.city!, country <- item.country!, lat <- item.lat, lng <- item.lng)
 
             do {
                 let rowId = try DB.run(insert)
@@ -62,14 +63,14 @@ class LocationDataHelper: DataHelperProtocol {
         
     }
     
-    static func delete (item: T) throws -> Void {
+    
+    static func deleteAll () throws -> Void {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
         
-        let query = table.filter(lat == item.lat && lng == item.lng)
         do {
-            let tmp = try DB.run(query.delete())
+            let tmp = try DB.run(table.delete())
             guard tmp == 1 else {
                 throw DataAccessError.Delete_Error
             }
@@ -86,7 +87,7 @@ class LocationDataHelper: DataHelperProtocol {
             throw DataAccessError.Datastore_Connection_Error
         }
         let query = table.filter(latId == lat && lng == lngId)
-        print(query)
+    
         let items = try DB.prepare(query)
         for item in  items {
             return Location(place: item[place], city: item[city], country: item[country], lat: item[lat], lng: item[lng])

@@ -14,7 +14,6 @@ class AuthorDataHelper: DataHelperProtocol {
     static let TABLE_NAME = "Authors"
     
     static let table = Table(TABLE_NAME)
-    static let authorid = Expression<Int64>("authorid")
     static let lastname = Expression<String>("lastname")
     static let firstname = Expression<String>("firstname")
     
@@ -26,9 +25,9 @@ class AuthorDataHelper: DataHelperProtocol {
         }
         do {
             let _ = try DB.run( table.create(ifNotExists: true) {t in
-                t.column(authorid,primaryKey: true)
                 t.column(lastname)
                 t.column(firstname)
+                t.primaryKey(lastname, firstname)
                 })
             
         } catch _ {
@@ -42,12 +41,6 @@ class AuthorDataHelper: DataHelperProtocol {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
-        
-        let query = table.filter(item.lastname == lastname && item.firstname == firstname )
-            
-         let items = try DB.prepare(query)
-    
-        
         let insert = table.insert(lastname <- item.lastname, firstname <- item.firstname)
         do {
             let rowId = try DB.run(insert)
@@ -59,9 +52,8 @@ class AuthorDataHelper: DataHelperProtocol {
             throw DataAccessError.Insert_Error
         }
         
+        
     }
-    
-    
     
     
     static func delete (item: T) throws -> Void {
@@ -69,7 +61,19 @@ class AuthorDataHelper: DataHelperProtocol {
             throw DataAccessError.Datastore_Connection_Error
         }
         
+        
+        
         let query = table.filter(item.lastname == lastname && item.firstname == firstname )
+        
+        // delete the row of ComeFrom
+        do{
+            let comeFroms =  try ComeFromDataHelper.find(item.firstname, lastname: item.lastname)
+            for c in comeFroms! {
+                try ComeFromDataHelper.delete(c)
+            }
+        }catch{}
+        
+        
         do {
             let tmp = try DB.run(query.delete())
             guard tmp == 1 else {
@@ -81,6 +85,37 @@ class AuthorDataHelper: DataHelperProtocol {
         
         
     }
+    
+    static func find(item: T) throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var retArray = [T]()
+        let query = table.filter(item.lastname == lastname && item.firstname == firstname )
+        let items = try DB.prepare(query.order(lastname))
+        for item in items {
+            retArray.append(Author(lastname: item[lastname], firstname: item[firstname]))
+        }
+        
+        return retArray
+        
+    }
+    
+    static func find(lastname : String, firstname : String) throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var retArray = [T]()
+        let query = table.filter(self.lastname == lastname && self.firstname == firstname )
+        let items = try DB.prepare(query.order(lastname))
+        for item in items {
+            retArray.append(Author(lastname: item[self.lastname], firstname: item[self.firstname]))
+        }
+        
+        return retArray
+        
+    }
+
     
     static func findAll() throws -> [T]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {

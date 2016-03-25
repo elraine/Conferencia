@@ -12,9 +12,8 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     var author : Author?
     
-    var doc : [Doc]? = []
+    var docs : [Doc]? = []
     
-    let titleSection : [String] = ["Presenting","Chairing"]
     
     // view
     @IBOutlet weak var speakerName: UILabel!
@@ -36,19 +35,31 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
         navigationItem.title = "Speaker Details"
         speakerName.text = "\(self.author!.lastname) \(self.author!.firstname)"
         
-        var affiliation : String = "University"
+        var affiliation : String = ""
         do{
-            affiliation = try ComeFromDataHelper.find(self.author!.firstname, lastname: self.author!.lastname)!
+            let comeFrom = try ComeFromDataHelper.find(self.author!.firstname, lastname: self.author!.lastname)
+            if comeFrom!.count > 0 {
+                affiliation = comeFrom![0].affiliationname
+            }
+            let located = try LocatedDataHelper.find(self.author!.firstname, lastname: self.author!.lastname)
+            
+            for l in located! {
+                let doc : Doc = try DocDataHelper.find(l.docid)!
+                docs?.append(doc)
+            }
         }
         catch{}
+        
+        
+        // View
         
         speakerUniversity.text = affiliation
         
         //table view
-        //tableView.delegate = self
-        //tableView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "docAuthorCell")
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "eventCell")
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,36 +69,73 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
     //Table view
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return titleSection[section]
-    }
-    
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
-    }
+  
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return docs!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = self.tableView.dequeueReusableCellWithIdentifier("docAuthorCell")! as! DocAuthorViewCell
+        let cell = self.tableView.dequeueReusableCellWithIdentifier("eventACell")! as! EventViewCell
         
-        cell.ClusterName.text = "test"
+        let doc = docs![indexPath.row]
+        var event : Event?
+        do{
+            event = try EventDataHelper.find(doc.eventid)
+        }catch{}
+        cell.name.text = event!.title
+        cell.type.text = doc.title
+        
+        if event!.roomid == -1{
+            cell.room.text = ""
+        }else{
+            let room = try? RoomDataHelper.find(event!.roomid)
+            cell.room.text = room!!.name
+        }
+        
+        cell.timeS.text = timeView(doc.time_start)
+        cell.timeE.text = timeView(doc.time_end)
         
         return cell
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("You selected cell #\(indexPath.row)!")
+        let selectedDocCell = self.docs![indexPath.row]
+        print(selectedDocCell)
     }
-    */
-
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowDoc" {
+            let DocViewController = (segue.destinationViewController as! UINavigationController).topViewController as! DocDetailViewController
+            if let selectedDocCell = sender as? UITableViewCell {
+                let indexPath = self.tableView.indexPathForCell(selectedDocCell)!
+                let selectedAuthor = self.docs![indexPath.row]
+                
+                DocViewController.doc = selectedAuthor
+            }
+        }
+    }
+    
+    
+    func timeView(time : String) -> String{
+        var myArray = time.componentsSeparatedByString(":")
+        
+        let timeComponents = NSDateComponents()
+        timeComponents.hour = Int(myArray[0])!
+        timeComponents.minute = Int(myArray[1])!
+        
+        let time = NSCalendar.currentCalendar().dateFromComponents(timeComponents)!
+        
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.timeStyle = .ShortStyle
+        
+        return dayTimePeriodFormatter.stringFromDate(time)
+        
+    }
+    
 }

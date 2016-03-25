@@ -7,34 +7,45 @@
 //
 
 import UIKit
+import SQLite
+
 let CONF_ID = 1601
+let firstConnection = 0
+let manager = SetDataManager(id: CONF_ID)
 
 class HomepageViewController: UIViewController {
 
     @IBOutlet weak var Progress: UIProgressView!
+    @IBOutlet weak var progressButton: UIButton!
+    
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     let SQLBase = SQLiteDataStore.sharedInstance
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        if(!isAppAlreadyLaunchedOnce()){
-            print("first time")
-            LoadingOverlay.showOverlay(self.view! as UIView)
+        print("first time")
         do{
-            try SQLBase.createTables()
-        }catch{}
+         //   try SQLBase.createTables()
+        }catch{ print("Creation de la Base de données : \(error)")}
         
-        SetDataManager(id: CONF_ID)
-            
-        }else{
-            print("not first time")
-        }
-        //resetData()
+       // let finish = manager.firstConnection()
         
+        //manager.update()
+    
     }
 
+    @IBAction func progressButtonAct(sender: AnyObject) {
+        do{
+            try dropData()
+        }catch{}
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("isAppAlreadyLaunchedOnce")
+        print("reset to zero")
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -47,6 +58,7 @@ class HomepageViewController: UIViewController {
         let span = Float(currentMin)/60.0
         Progress.setProgress(span, animated: false)
         print("\(currentMin) : \(span)")
+        
     }
 
 }
@@ -95,6 +107,20 @@ func resetData(){
             }
         }
     } catch _ {}
+}
+
+func dropData() throws {
+    guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+        throw DataAccessError.Datastore_Connection_Error
+    }
+    let bass = ["Affilations","Authors","Clusters","ComeFrom","Conferences","Docs","Events","Located","Locations","Rooms"]
+    do{
+        for t in bass{
+            try DB.run(Table(t).drop(ifExists: true))
+        }
+    }catch{
+        print("cant drop")
+    }
 }
     
     func isAppAlreadyLaunchedOnce()->Bool{

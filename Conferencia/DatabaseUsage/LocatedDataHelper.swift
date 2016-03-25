@@ -9,11 +9,10 @@
 import Foundation
 import SQLite
 
-class LocatedDataHelper: DataHelperProtocol {
+class LocatedDataHelper {
     static let TABLE_NAME = "Located"
     
     static let table = Table(TABLE_NAME)
-    static let locid = Expression<Int64>("locid")
     static let lastname = Expression<String>("lastname")
     static let firstname = Expression<String>("firstname")
     static let docid = Expression<Int64>("docid")
@@ -29,11 +28,12 @@ class LocatedDataHelper: DataHelperProtocol {
         }
         do {
             let _ = try DB.run( table.create(ifNotExists: true) {t in
-                t.column(locid,primaryKey: true)
                 t.column(lastname)
                 t.column(firstname)
                 t.column(docid)
                 t.column(speaker)
+                t.primaryKey(lastname, firstname, docid)
+
                 })
             
         } catch _ {
@@ -41,12 +41,31 @@ class LocatedDataHelper: DataHelperProtocol {
         }
     }
     
+    static func find(doc : Int64? = -1, item : T? = nil) throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var retArray = [T]()
+        var query = table.filter(doc! == self.docid)
+        
+        if doc == -1 {
+            query = table.filter(item!.lastname == lastname && item!.firstname == firstname && item!.docid == docid)
+        }
+        let items = try DB.prepare(query)
+        for item in items {
+            retArray.append(Located(lastname: item[lastname], firstname: item[firstname], docid: item[docid], speaker: item[speaker]))
+        }
+        
+        return retArray
+        
+    }
+    
     static func insert(item: T) throws -> Int64 {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
         
-        let insert = table.insert(lastname <- item.lastname, firstname <- item.firstname, docid <- item.docid, speaker <- item.speaker)
+        let insert = table.insert(or: .Replace, lastname <- item.lastname, firstname <- item.firstname, docid <- item.docid, speaker <- item.speaker)
         do {
             let rowId = try DB.run(insert)
             guard rowId > 0 else {
@@ -57,22 +76,6 @@ class LocatedDataHelper: DataHelperProtocol {
             throw DataAccessError.Insert_Error
         }
         
-        
-    }
-    
-    static func findBySpeacker(firstname : String, lastname : String) throws -> [Int64]? {
-        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
-            throw DataAccessError.Datastore_Connection_Error
-        }
-        let query = table.filter(firstname == self.firstname && lastname == self.lastname)
-
-        var retArray = [Int64]()
-        let items = try DB.prepare(query)
-        for item in items {
-            retArray.append(item[docid])
-        }
-        
-        return retArray
         
     }
     
@@ -93,6 +96,20 @@ class LocatedDataHelper: DataHelperProtocol {
         
     }
     
+    static func find(firstname : String, lastname : String) throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var retArray = [T]()
+        let query = table.filter(firstname == self.firstname && lastname == self.lastname)
+        let items = try DB.prepare(query)
+        for item in items {
+            retArray.append(Located(lastname: item[self.lastname], firstname: item[self.firstname], docid: item[docid], speaker: item[speaker]))
+        }
+        
+        return retArray
+        
+    }
     
     static func findAll() throws -> [T]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
@@ -108,5 +125,5 @@ class LocatedDataHelper: DataHelperProtocol {
         
     }
     
-
+    
 }

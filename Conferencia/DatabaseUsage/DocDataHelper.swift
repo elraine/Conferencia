@@ -20,7 +20,7 @@ class DocDataHelper: DataHelperProtocol {
     static let abstract = Expression<String?>("abstract")
     static let link = Expression<String?>("link")
     static let eventid = Expression<Int64>("eventid")
-    
+    static let perso = Expression<Bool>("perso")
     
     typealias T = Doc
     
@@ -37,6 +37,7 @@ class DocDataHelper: DataHelperProtocol {
                 t.column(abstract)
                 t.column(link)
                 t.column(eventid)
+                t.column(perso, defaultValue : false)
                 })
             
         } catch _ {
@@ -44,23 +45,6 @@ class DocDataHelper: DataHelperProtocol {
         }
     }
     
-    static func find(docid : Int64) throws -> [T]? {
-        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
-            throw DataAccessError.Datastore_Connection_Error
-        }
-        
-        let query = table.filter(docid == self.docid)
-
-        
-        var retArray = [T]()
-        let items = try DB.prepare(query)
-        for item in items {
-            retArray.append(Doc(docid: item[self.docid], time_start: item[time_start], time_end: item[time_end], title: item[title], abstract: item[abstract], link: item[link], eventid: item[eventid]))
-        }
-        
-        return retArray
-        
-    }
     
     
     static func insert(item: T) throws -> Int64 {
@@ -83,6 +67,25 @@ class DocDataHelper: DataHelperProtocol {
         
     }
     
+    static func upDate(item: T) throws -> Void {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        
+        let query = table.filter(item.docid == docid)
+        
+        do {
+            if try DB.run(query.update(time_start <- item.time_start, time_end <- item.time_end, title <- item.title, abstract <- item.abstract!, link <- item.link!, eventid <- item.eventid)) > 0 {
+                print("updated doc")
+            } else {
+                try insert(item)
+                print("insert new doc")
+            }
+        } catch {
+            print("update failed: \(error)")
+        }
+    }
+    
     static func delete (item: T) throws -> Void {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
@@ -101,19 +104,20 @@ class DocDataHelper: DataHelperProtocol {
     
     }
     
-    static func findByEvent(eventid: Int64) throws -> [T]? {
+    static func addMyProgram(docid : Int64) throws -> Void {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
-        var retArray = [T]()
-        let query = table.filter(self.eventid == eventid)
-        let items = try DB.prepare(query.order(time_start))
-        for item in items {
-            retArray.append(Doc(docid: item[docid], time_start: item[time_start], time_end: item[time_end], title: item[title], abstract: item[abstract], link: item[link], eventid: item[self.eventid]))
+        
+        let query = table.filter(docid == self.docid)
+        do{
+            let tmp = try DB.run(query.update(perso <- true))
+            guard tmp == 1 else {
+                throw DataAccessError.Delete_Error
+            }
+        } catch _ {
+            throw DataAccessError.Delete_Error
         }
-        
-        return retArray
-        
     }
     
     static func findAll() throws -> [T]? {
@@ -131,6 +135,42 @@ class DocDataHelper: DataHelperProtocol {
     }
     
     
+    static func find(docid : Int64 ) throws -> T? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        
+        let query = table.filter(docid == self.docid)
+        
+        
+        var ret : T? = nil
+        let items = try DB.prepare(query)
+        for item in items {
+            ret = Doc(docid: item[self.docid], time_start: item[time_start], time_end: item[time_end], title: item[title], abstract: item[abstract], link: item[link], eventid: item[eventid])
+        }
+        
+        return ret
+        
+    }
+    
+    static func findByEvent(eventid: Int64, perso : Bool? = false) throws -> [T]? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var retArray = [T]()
+        var query = table.filter(self.eventid == eventid)
+        
+        if perso == true{
+             query = table.filter(self.eventid == eventid && self.perso == true)
+        }
+        let items = try DB.prepare(query.order(time_start))
+        for item in items {
+            retArray.append(Doc(docid: item[docid], time_start: item[time_start], time_end: item[time_end], title: item[title], abstract: item[abstract], link: item[link], eventid: item[self.eventid]))
+        }
+        
+        return retArray
+        
+    }
     
     
 }

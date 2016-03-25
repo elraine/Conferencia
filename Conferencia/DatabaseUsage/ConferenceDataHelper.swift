@@ -59,7 +59,7 @@ class ConferenceDataHelper: DataHelperProtocol {
         }
         if (item.link != nil && item.shortname != nil && item.description != nil ) {
             
-            let insert = table.insert(confid<-item.confid, link <- item.link!, shortname <- item.shortname!, name <- item.name, description <- item.description!, date_begin <- item.date_begin, date_end <- item.date_end, date_creation <- item.date_creation, lat <- item.lat, lng <- item.lng)
+            let insert = table.insert(or: .Replace,confid<-item.confid, link <- item.link!, shortname <- item.shortname!, name <- item.name, description <- item.description!, date_begin <- item.date_begin, date_end <- item.date_end, date_creation <- item.date_creation, lat <- item.lat, lng <- item.lng)
 
             do {
                 let rowId = try DB.run(insert)
@@ -74,6 +74,8 @@ class ConferenceDataHelper: DataHelperProtocol {
         throw DataAccessError.Nil_In_Data
         
     }
+    
+   
     
     static func delete (item: T) throws -> Void {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {

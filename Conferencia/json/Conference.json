@@ -1,0 +1,38 @@
+{
+    "confid":"1601",
+    "link":"http:\/\/ecos2015.sciencesconf.org",
+    "shortname":"ecos2015",
+    "name":"Ecos2015 : 28th International Conference on Efficiency, Cost, Optimization, Simulation and Environmental Impact of Energy Systems",
+    "description":"The ECOS conferences have a long tradition in fostering the key aspects and the scientific knowledge that are essential to take into account the evolution of all the aspects of energy and its impacts.",
+    "date_begin":"2015-06-29",
+    "date_end":"2015-07-03",
+    "topics":[
+              {
+              "code":"SPI:MECA:THER",
+              "labels":{
+              "en":{
+              "@attributes":{
+              "lang":"en"
+              }
+              }
+              }
+              }
+              ],
+    "thumbnail":{
+        "thumbid":"4783298",
+        "link":"https:\/\/thumb.ccsd.cnrs.fr\/4783298\/large"
+    },
+    "location":{
+        "place":"ECOS 2015 will be held in Pau at the Historic Conference Centre \u201cPalais Beaumont\u201d http:\/\/www.pau-congres.com\/ in the city center.",
+        "city":"Pau",
+        "country":{
+            "code":"fr",
+            "labels":{
+                "en":"France"
+            }
+        },
+        "lat":"43.2943404212215",
+        "lng":"-0.362012386322021"
+    },
+    "date_creation":"2014-09-30"
+}

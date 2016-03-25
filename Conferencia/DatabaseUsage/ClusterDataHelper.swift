@@ -13,7 +13,6 @@ class ClusterDataHelper {
     static let TABLE_NAME = "Clusters"
     
     static let table = Table(TABLE_NAME)
-    
     static let clusterid = Expression<Int64>("clusterid")
     static let shorttitle = Expression<String>("shorttitle")
     static let description = Expression<String?>("description")
@@ -26,7 +25,6 @@ class ClusterDataHelper {
         }
         do {
             let _ = try DB.run( table.create(ifNotExists: true) {t in
-               
                 t.column(clusterid, primaryKey: true)
                 t.column(shorttitle)
                 t.column(description)

@@ -22,7 +22,7 @@ class EventDataHelper: DataHelperProtocol {
     static let title = Expression<String>("title")
     static let chairman = Expression<String?>("chairman")
     static let roomid = Expression<Int64>("roomid")
-
+    static let perso = Expression<Bool>("perso")
     
     
     typealias T = Event
@@ -43,13 +43,14 @@ class EventDataHelper: DataHelperProtocol {
                 t.column(title)
                 t.column(chairman)
                 t.column(roomid)
+                t.column(perso, defaultValue : false)
                 })
             
         } catch _ {
             // Error throw if table already exists
         }
     }
-    
+
     
     static func insert(item: T) throws -> Int64 {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
@@ -71,13 +72,43 @@ class EventDataHelper: DataHelperProtocol {
         
     }
     
+    static func upDate(item: T) throws -> Void {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        
+        let query = table.filter(item.eventid == eventid)
+        
+        do {
+            if try DB.run(query.update(date <- item.date, time_start <- item.time_start, time_end <- item.time_end, type <- item.type, shorttitle <- item.shorttitle!, title <- item.title, chairman <- item.chairman, roomid <- item.roomid)) > 0 {
+                print("updated event")
+            } else {
+                try insert(item)
+                print("insert new event")
+            }
+        } catch {
+            print("update failed: \(error)")
+        }
+    }
     
+   
+
     static func delete (item: T) throws -> Void {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
         
+        // delete associated docs
+        do{
+            let docs = try DocDataHelper.findByEvent(item.eventid)
+            for doc in docs! {
+                try DocDataHelper.delete(doc)
+            }
+        }catch{
+            print("Delete error : \(error)")
+        }
      
+            
         let query = table.filter(item.eventid == eventid)
         do {
             let tmp = try DB.run(query.delete())
@@ -91,6 +122,28 @@ class EventDataHelper: DataHelperProtocol {
         
     }
     
+    static func find(eventid : Int64? = -1, roomid : Int64? = -1) throws -> T? {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        var query = table
+        
+        if eventid != -1{
+            query = table.filter(eventid! == self.eventid)
+        }
+        if roomid != -1 {
+            query = table.filter(roomid! == self.roomid)
+        }
+        
+        var ret :T?
+        let items = try DB.prepare(query)
+        for item in items {
+            ret = Event(eventid: item[self.eventid], date: item[date], time_start: item[time_start], time_end: item[time_end], type: item[type], shorttitle: item[shorttitle], title: item[title], chairman: item[chairman], roomid: item[self.roomid])
+        }
+        
+        return ret
+
+    }
     
     static func findAll() throws -> [T]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
@@ -105,14 +158,19 @@ class EventDataHelper: DataHelperProtocol {
         return retArray
         
     }
+
     
-    static func findEventByDay(date: String) throws -> [T]? {
+    static func findEventByDay(date: String, perso : Bool? = false) throws -> [T]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
         var retArray = [T]()
         
-        let query = table.filter(date == self.date)
+        var query = table.filter(date == self.date)
+        
+        if perso == true {
+            query = table.filter(date == self.date && self.perso == true)
+        }
         
         let items = try DB.prepare(query)
         for item in items {
@@ -124,13 +182,17 @@ class EventDataHelper: DataHelperProtocol {
     
     
     
-    static func findEventByDayTime(date: String, time_start: String) throws -> [T]? {
+    static func findEventByDayTime(date: String, time_start: String, perso : Bool? = false) throws -> [T]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
         var retArray = [T]()
         
-        let query = table.filter(date == self.date && time_start == self.time_start)
+        var query = table.filter(date == self.date && time_start == self.time_start)
+        
+        if perso == true {
+            query = table.filter(date == self.date && time_start == self.time_start && self.perso == true)
+        }
         
         let items = try DB.prepare(query)
         for item in items {
@@ -175,38 +237,8 @@ class EventDataHelper: DataHelperProtocol {
         
         return retArray
     }
+
     
-    static func findTimeSlotByDay(date: String) throws -> [String]? {
-        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
-            throw DataAccessError.Datastore_Connection_Error
-        }
-        var retArray = [String]()
-        
-        let query = table.filter(date == self.date)
-        
-        let items = try DB.prepare(query.select(distinct: time_start).order(time_start))
-        for item in items {
-            
-            var myArray = item[time_start].componentsSeparatedByString(":")
-            
-            let timeStartComponents = NSDateComponents()
-            timeStartComponents.hour = Int(myArray[0])!
-            timeStartComponents.minute = Int(myArray[1])!
-            
-            let timeStart = NSCalendar.currentCalendar().dateFromComponents(timeStartComponents)!
-            
-            let dayTimePeriodFormatter = NSDateFormatter()
-            dayTimePeriodFormatter.timeStyle = .ShortStyle
-            
-            let dateString = dayTimePeriodFormatter.stringFromDate(timeStart)
-
-            
-            retArray.append(dateString)
-        }
-        
-        return retArray
-    }
-
     
     static func findDaySlot() throws -> [String]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
@@ -223,5 +255,30 @@ class EventDataHelper: DataHelperProtocol {
         
         return retArray
     }
+    
+    static func addMyProgram(eventid : Int64) throws -> Void {
+        guard let DB = SQLiteDataStore.sharedInstance.CDB else {
+            throw DataAccessError.Datastore_Connection_Error
+        }
+        
+        let query = table.filter(eventid == self.eventid)
+        do{
+            let tmp = try DB.run(query.update(perso <- true))
+            guard tmp == 1 else {
+                throw DataAccessError.Delete_Error
+            }
+        } catch _ {
+            throw DataAccessError.Delete_Error
+        }
+    }
 
 }
+
+
+
+
+
+
+
+
+
