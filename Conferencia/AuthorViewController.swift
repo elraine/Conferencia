@@ -181,21 +181,31 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowDoc" {
+        if segue.identifier == "ShowDoc1" {
             let DocViewController = (segue.destinationViewController as! UINavigationController).topViewController as! DocDetailViewController
             if let selectedDocCell = sender as? UITableViewCell {
                 
                 let indexPath = self.tableView.indexPathForCell(selectedDocCell)!
                 
-                if tableView == tableView{
-                    let selectedDoc = self.docsTalks[indexPath.row]
-                     DocViewController.doc = selectedDoc
-                }else{
-                    let selectedDoc = self.docsCoAuthorship[indexPath.row]
-                     DocViewController.doc = selectedDoc
-                }
+          
+                let selectedDoc = self.docsTalks[indexPath.row]
+                DocViewController.doc = selectedDoc
+             
                 
                
+            }
+        }else if segue.identifier == "ShowDoc2" {
+            let DocViewController = (segue.destinationViewController as! UINavigationController).topViewController as! DocDetailViewController
+            if let selectedDocCell = sender as? UITableViewCell {
+                
+                let indexPath = self.tableView2.indexPathForCell(selectedDocCell)!
+                
+              
+                let selectedDoc = self.docsCoAuthorship[indexPath.row]
+                DocViewController.doc = selectedDoc
+                
+                
+                
             }
         }
     }

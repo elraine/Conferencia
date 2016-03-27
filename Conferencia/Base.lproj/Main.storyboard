@@ -568,6 +568,7 @@
                                                                     <outlet property="timeE" destination="e4z-be-W55" id="rG5-Y9-qdr"/>
                                                                     <outlet property="timeS" destination="rGH-Vm-dGe" id="M0X-nl-8pt"/>
                                                                     <outlet property="type" destination="0gH-k1-ewg" id="PqV-k8-eOy"/>
+                                                                    <segue destination="cte-VM-SH3" kind="show" identifier="ShowDoc1" trigger="accessoryAction" id="gUF-3j-wXt"/>
                                                                 </connections>
                                                             </tableViewCell>
                                                         </prototypes>
@@ -666,7 +667,7 @@
                                                                     <outlet property="timeE" destination="Urq-Gi-pv3" id="rVZ-Zl-eXw"/>
                                                                     <outlet property="timeS" destination="rls-Ce-zEf" id="ZyT-RQ-p9w"/>
                                                                     <outlet property="type" destination="Jb4-NE-1Eb" id="JWo-3O-m7P"/>
-                                                                    <segue destination="cte-VM-SH3" kind="show" identifier="ShowDoc" id="sva-Uf-CWL"/>
+                                                                    <segue destination="cte-VM-SH3" kind="show" identifier="ShowDoc2" id="sva-Uf-CWL"/>
                                                                 </connections>
                                                             </tableViewCell>
                                                         </prototypes>
@@ -704,7 +705,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sxh-kB-ngc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1667" y="2933"/>
+            <point key="canvasLocation" x="-1291" y="2658"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zwG-Lg-osC">
@@ -1087,6 +1088,7 @@
         <image name="time.png" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="gUF-3j-wXt"/>
         <segue reference="GKi-RL-OPo"/>
     </inferredMetricsTieBreakers>
 </document>
