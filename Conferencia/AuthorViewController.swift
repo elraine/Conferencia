@@ -15,6 +15,9 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var docsTalks = [Doc]()
     var docsCoAuthorship = [Doc]()
     
+    // Date View
+    let date = DateView()
+    
     // view
     @IBOutlet weak var speakerName: UILabel!
     @IBOutlet weak var speakerUniversity: UILabel!
@@ -27,6 +30,8 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableView2: UITableView!
+    @IBOutlet weak var noneTalks: UILabel!
+    @IBOutlet weak var noneCoAuthorship: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,15 +59,24 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         catch{}
         
-        print(docsCoAuthorship.count)
+        
+        
+        // View
         
         if docsTalks.count == 0{
             tableView.hidden = true
+            
+        }else{
+            noneTalks.hidden = true
         }
+        
         if docsCoAuthorship.count == 0{
             tableView2.hidden = true
+        }else{
+            noneCoAuthorship.hidden = true
         }
-        // View
+        
+        
         
         speakerUniversity.text = affiliation
         
@@ -131,8 +145,8 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell.room.text = room!!.name
             }
             
-            cell.timeS.text = timeView(doc!.time_start)
-            cell.timeE.text = timeView(doc!.time_end)
+            cell.timeS.text = date.timeView(doc!.time_start)
+            cell.timeE.text = date.timeView(doc!.time_end)
             
             return cell
 
@@ -156,8 +170,8 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell.room.text = room!!.name
             }
             
-            cell.timeS.text = timeView(doc!.time_start)
-            cell.timeE.text = timeView(doc!.time_end)
+            cell.timeS.text = date.timeView(doc!.time_start)
+            cell.timeE.text = date.timeView(doc!.time_end)
             
             return cell
 
@@ -182,6 +196,7 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowDoc1" {
+           
             let DocViewController = (segue.destinationViewController as! UINavigationController).topViewController as! DocDetailViewController
             if let selectedDocCell = sender as? UITableViewCell {
                 
@@ -210,21 +225,6 @@ class AuthorViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    
-    func timeView(time : String) -> String{
-        var myArray = time.componentsSeparatedByString(":")
-        
-        let timeComponents = NSDateComponents()
-        timeComponents.hour = Int(myArray[0])!
-        timeComponents.minute = Int(myArray[1])!
-        
-        let time = NSCalendar.currentCalendar().dateFromComponents(timeComponents)!
-        
-        let dayTimePeriodFormatter = NSDateFormatter()
-        dayTimePeriodFormatter.timeStyle = .ShortStyle
-        
-        return dayTimePeriodFormatter.stringFromDate(time)
-        
-    }
+
     
 }

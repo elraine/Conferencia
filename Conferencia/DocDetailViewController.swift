@@ -14,6 +14,9 @@ class DocDetailViewController: UIViewController, UITableViewDelegate, UITableVie
     var event : Event?
     var room : Room?
    
+    // Date View
+    let dateV = DateView()
+    
     @IBOutlet weak var clusterName: UILabel!
     @IBOutlet weak var docName: UILabel!
     @IBOutlet weak var date: UILabel!
@@ -44,8 +47,8 @@ class DocDetailViewController: UIViewController, UITableViewDelegate, UITableVie
         // Set information
         clusterName.text = event!.title
         docName.text = doc!.title
-        date.text = "\(event!.date) \(doc!.time_start) - \(doc!.time_end)"
-        roomName.text = room!.name
+        date.text = "\(dateV.dateView(event!.date)) | \(dateV.timeView(doc!.time_start)) - \(dateV.timeView(doc!.time_end))"
+        roomName.text = "Room: \(room!.name)"
         abstractView.text = doc!.abstract
         
     }

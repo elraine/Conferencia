@@ -19,6 +19,9 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
     var events : [Event]? = []
     var source = [String]()
     
+    // Date View
+    let date = DateView()
+    
     @IBOutlet weak var tableView: UITableView!
 
 
@@ -58,7 +61,7 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.title = dateView(source[pagenumber])
+        self.title = date.dateView(source[pagenumber])
       
         // MARK: Index list
         self.timeIndex(events!)
@@ -101,9 +104,9 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         let event = events![sections[indexPath.section].index + indexPath.row]
         cell.type.text = event.type
-        cell.timeS.text = timeView(event.time_start)
+        cell.timeS.text = date.timeView(event.time_start)
         
-        cell.timeE.text = timeView(event.time_end)
+        cell.timeE.text = date.timeView(event.time_end)
         cell.name.text = event.title
         
         
@@ -139,7 +142,7 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.timeIndex(events!)
                 
                 self.tableView.reloadData()
-                self.title = dateView(source[pagenumber])
+                self.title = date.dateView(source[pagenumber])
             }
         }
         
@@ -156,7 +159,7 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.timeIndex(events!)
                 
                 self.tableView.reloadData()
-                self.title = dateView(source[pagenumber])
+                self.title = date.dateView(source[pagenumber])
             }
         }
     }
@@ -168,38 +171,7 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     //Helped Methodes
-    func dateView(date : String) -> String{
-        var myArray = date.componentsSeparatedByString("-")
-        
-        let dayComponents = NSDateComponents()
-        dayComponents.year = Int(myArray[0])!
-        dayComponents.month = Int(myArray[1])!
-        dayComponents.day = Int(myArray[2])!
-        
-        let day = NSCalendar.currentCalendar().dateFromComponents(dayComponents)!
-        
-        let dayTimePeriodFormatter = NSDateFormatter()
-        dayTimePeriodFormatter.dateFormat = "EE d"
-        
-        return dayTimePeriodFormatter.stringFromDate(day)
-    }
-    
-    
-    func timeView(time : String) -> String{
-        var myArray = time.componentsSeparatedByString(":")
-        
-        let timeComponents = NSDateComponents()
-        timeComponents.hour = Int(myArray[0])!
-        timeComponents.minute = Int(myArray[1])!
-        
-        let time = NSCalendar.currentCalendar().dateFromComponents(timeComponents)!
-        
-        let dayTimePeriodFormatter = NSDateFormatter()
-        dayTimePeriodFormatter.timeStyle = .ShortStyle
-        
-        return dayTimePeriodFormatter.stringFromDate(time)
 
-    }
     
     func timeIndex(var events : [Event]){
         var index = 0;
@@ -213,9 +185,9 @@ class ProgramViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             if common == false || (common == true && i ==  events.count - 1){
                 
-                let start = timeView(events[index].time_start);
+                let start = date.timeView(events[index].time_start);
                 
-                let end = timeView(events[index].time_end);
+                let end = date.timeView(events[index].time_end);
                 
                 let title = "\(start) - \(end)"
                 
