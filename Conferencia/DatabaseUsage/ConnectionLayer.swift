@@ -6,6 +6,12 @@
 //  Copyright © 2016 Angélique Blondel. All rights reserved.
 //
 
+var endFirstLayer = false{
+    didSet{
+        LoadingOverlay.shared.hideOverlayView()
+    }
+}
+
 import Foundation
 
 import SQLite
@@ -67,6 +73,7 @@ class SQLiteDataStore {
         } catch {
             throw DataAccessError.Datastore_Connection_Error
         }
+        endFirstLayer = true
     }
     
    
