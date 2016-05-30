@@ -1,10 +1,3 @@
-//
-//  LoadingOverlay.swift
-//  Conferencia
-//
-//  Created by Alexis Chan on 07/03/2016.
-//  Copyright © 2016 achan. All rights reserved.
-//
 
 import UIKit
 

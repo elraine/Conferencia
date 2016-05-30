@@ -104,21 +104,30 @@ class DocDataHelper: DataHelperProtocol {
     
     }
     
-    static func addMyProgram(docid : Int64) throws -> Void {
+    static func MyProgram(docid : Int64, add : Bool) throws -> Void {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {
             throw DataAccessError.Datastore_Connection_Error
         }
         
+        
         let query = table.filter(docid == self.docid)
         do{
-            let tmp = try DB.run(query.update(perso <- true))
-            guard tmp == 1 else {
-                throw DataAccessError.Delete_Error
+            if add == true {
+                let tmp = try DB.run(query.update(perso <- true))
+                guard tmp == 1 else {
+                    throw DataAccessError.Delete_Error
+                }
+            }else{
+                let tmp = try DB.run(query.update(perso <- false))
+                guard tmp == 1 else {
+                    throw DataAccessError.Delete_Error
+                }
             }
         } catch _ {
             throw DataAccessError.Delete_Error
         }
     }
+    
     
     static func findAll() throws -> [T]? {
         guard let DB = SQLiteDataStore.sharedInstance.CDB else {

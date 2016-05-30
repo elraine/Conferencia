@@ -1,10 +1,4 @@
-//
-//  AppDelegate.swift
-//  Conferencia
-//
-//  Created by Alexis Chan on 04/02/2016.
-//  Copyright © 2016 achan. All rights reserved.
-//
+
 
 import UIKit
 import MapKit
@@ -41,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate,
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        NSUserDefaults.standardUserDefaults().setObject(dict, forKey: "myPlanning")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
 
 

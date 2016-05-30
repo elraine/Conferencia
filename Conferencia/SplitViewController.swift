@@ -2,8 +2,24 @@
 //  SplitViewController.swift
 //  Conferencia
 //
-//  Created by Zarof on 27/03/2016.
-//  Copyright © 2016 achan. All rights reserved.
+//  Created by Guillaume Zahar on 12/03/2016.
+//  Copyright © 2016 gzahar. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class SplitViewController: UISplitViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // set the preferred display mode SplitViewController.
+        
+        splitViewController?.preferredDisplayMode = .PrimaryOverlay
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+}

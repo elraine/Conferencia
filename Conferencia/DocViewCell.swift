@@ -1,10 +1,3 @@
-//
-//  DocViewCell.swift
-//  Conferencia
-//
-//  Created by Angélique Blondel on 24/03/2016.
-//  Copyright © 2016 achan. All rights reserved.
-//
 
 import UIKit
 
@@ -16,11 +9,11 @@ class DocViewCell: UITableViewCell {
     
     @IBOutlet weak var timeS: UILabel!
     @IBOutlet weak var timeE: UILabel!
+    @IBOutlet weak var favstar: UIButton!
     
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        // Configure the view for the selected state
     }
 
 }
